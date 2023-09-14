@@ -43,7 +43,7 @@ const LoginModal = () => {
       if (callback?.ok) {
         toast.success("Logged in");
         console.log(123);
-        router.refresh();
+        window.location.reload();
       }
 
       if (callback?.error) {
