@@ -13,8 +13,8 @@ import getCurrentUser from "./actions/getCurrentUser";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aribnb",
-  description: "Aribnb clone",
+  title: "Airbnb",
+  description: "Airbnb clone",
 };
 
 const font = Nunito({
