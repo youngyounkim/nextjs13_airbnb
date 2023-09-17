@@ -14,11 +14,13 @@ import toast from "react-hot-toast";
 import Button from "../Button";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { useRouter } from "next/navigation";
+import useRegisterModal from "@/app/hooks/useRegistaerModal";
 
 const LoginModal = () => {
   const router = useRouter();
 
-  const { isOpen, onClose } = useLoginModal();
+  const { isOpen, onClose: loginModalClose } = useLoginModal();
+  const { onOpen: registerModalOpen } = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -52,6 +54,11 @@ const LoginModal = () => {
       }
     });
   };
+
+  const toggle = useCallback(() => {
+    loginModalClose();
+    registerModalOpen();
+  }, [loginModalClose, registerModalOpen]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -94,7 +101,10 @@ const LoginModal = () => {
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex justify-center flex-row items-center gap-2">
           <div>First time using Airbnb?</div>
-          <div className="text-neutral-800 cursor-pointer hover:underline">
+          <div
+            onClick={toggle}
+            className="text-neutral-800 cursor-pointer hover:underline"
+          >
             Create an account
           </div>
         </div>
@@ -108,7 +118,7 @@ const LoginModal = () => {
       isOpen={isOpen}
       title="Login"
       actionLabel="Continue"
-      onClose={onClose}
+      onClose={loginModalClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}

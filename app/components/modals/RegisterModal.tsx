@@ -14,9 +14,11 @@ import toast from "react-hot-toast";
 import Button from "../Button";
 
 import { signIn } from "next-auth/react";
+import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
-  const { isOpen, onOpen, onClose } = useRegisterModal();
+  const { isOpen, onClose: registerModalClose } = useRegisterModal();
+  const { onOpen: loginModalOpen } = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -31,13 +33,18 @@ const RegisterModal = () => {
     },
   });
 
+  const toggle = useCallback(() => {
+    loginModalOpen();
+    registerModalClose();
+  }, [loginModalOpen, registerModalClose]);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
     axios
       .post("/api/register", data)
       .then(() => {
-        onClose();
+        registerModalClose();
       })
       .catch((error) => {
         toast.error("something went wrong");
@@ -96,7 +103,10 @@ const RegisterModal = () => {
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex justify-center flex-row items-center gap-2">
           <div>Already have an account?</div>
-          <div className="text-neutral-800 cursor-pointer hover:underline">
+          <div
+            onClick={toggle}
+            className="text-neutral-800 cursor-pointer hover:underline"
+          >
             Log in
           </div>
         </div>
@@ -110,7 +120,7 @@ const RegisterModal = () => {
       isOpen={isOpen}
       title="Register"
       actionLabel="Continue"
-      onClose={onClose}
+      onClose={registerModalClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
