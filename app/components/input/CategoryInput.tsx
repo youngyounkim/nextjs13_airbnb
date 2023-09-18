@@ -1,8 +1,5 @@
 "use client";
 
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
-import { BiDollar } from "react-icons/bi";
-
 import { IconType } from "react-icons";
 
 type CategoryInputProps = {
