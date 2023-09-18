@@ -6,6 +6,7 @@ import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { useCallback, useMemo, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import dynamic from "next/dynamic";
 
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ import useRentModal from "@/app/hooks/useRentModal";
 import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../input/CategoryInput";
+import CountrySelect from "../input/CountrySelect";
 
 enum STEPS {
   CATEGORY = 0,
@@ -49,6 +51,9 @@ const RentModal = () => {
     },
   });
 
+  const location = watch("location");
+  const category = watch("category");
+
   const onBack = () => {
     setStep((value) => value - 1);
   };
@@ -72,8 +77,6 @@ const RentModal = () => {
 
     return "Back";
   }, [step]);
-
-  const category = watch("category");
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -104,13 +107,28 @@ const RentModal = () => {
     </div>
   );
 
+  if (step === STEPS.LOCATION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Where is your place located?"
+          subTitle="Help guests find you!"
+        />
+        <CountrySelect
+          value={location}
+          onChange={(value) => setCustomValue("location", value)}
+        />
+      </div>
+    );
+  }
+
   return (
     <Modal
       isOpen={isOpen}
       title="Airbnb your home"
       actionLabel={actionLabel}
       onClose={onClose}
-      onSubmit={onClose}
+      onSubmit={onNext}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       secondaryActionLabel={secondaryActionLabel}
       body={bodyContent}
