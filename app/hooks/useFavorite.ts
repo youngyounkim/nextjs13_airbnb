@@ -7,12 +7,12 @@ import { SafeUser } from "@/app/types";
 
 import useLoginModal from "./useLoginModal";
 
-interface IUseFavorite {
+type UseFavorite = {
   listingId: string;
   currentUser?: SafeUser | null;
-}
+};
 
-const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
+const useFavorite = ({ listingId, currentUser }: UseFavorite) => {
   const router = useRouter();
 
   const loginModal = useLoginModal();
